@@ -25,30 +25,65 @@ The goal of cbbAnalysis is to scrape Sports Reference webpages to extract NCAA b
 You can install the development version of cbbAnalysis like so:
 
 ``` r
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+
+install.packages("devtools")
+devtools::install_github("HadenGwin/cbbAnalysis")
+
 ```
 
-## Example
+# Examples
 
-This is a basic example which shows you how to solve a common problem:
+Here is a basic example that demonstrates some of the functionality of the cbbAnalysis package:
 
-```{r example}
+## Scraping Matchups
+
+```{r matchups-example}
 library(cbbAnalysis)
-## basic example code
+# Get matchups for December 1, 2024
+matchups <- matchupsDate("2024-12-01")
+print(matchups)
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+## Calculating Four Factors Statistics
 
-```{r cars}
-summary(cars)
+```{r four-factors}
+boxscore_url <- "https://www.sports-reference.com/cbb/boxscores/2024-12-02-03-nevada.html"
+
+four_factors <- create_four_factors(boxscore_url)
+print(four_factors)
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+## Individual Team Statistics
 
-You can also embed plots, for example:
+``` {r team-stats}
 
-```{r pressure, echo = FALSE}
-plot(pressure)
+team = "https://www.sports-reference.com/cbb/schools/indiana/2024.html"
+
+teamStats <- calculate_team_metrics(team)
+print(teamStats)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+## train a model on a dynamic sample size
+
+``` {r train-model}
+start_date <- "2024-11-28"
+end_date <- "2024-12-12"
+num_games_per_day = 3
+ntree = 699
+
+newModel <- trainModel(start_date, end_date, num_games_per_day, ntree)
+```
+
+
+## predict matchups
+
+``` {r predict-matchups}
+team1_url <- "https://www.sports-reference.com/cbb/schools/indiana/2024.html"
+team2_url <- "https://www.sports-reference.com/cbb/schools/connecticut/2024.html"
+
+results <- trainModel(start_date = "2024-11-01", end_date = "2024-11-15", num_games_per_day = 5, ntree = 300)
+
+predictions <- predict_matchup(team1_url, team2_url, results)
+print(predictions)
+```
+
