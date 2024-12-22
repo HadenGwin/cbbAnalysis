@@ -19,3 +19,5 @@ Imports:
     rvest,
     randomForest,
     lubridate
+URL: https://github.com/HadenGwin/cbbAnalysis
+BugReports: https://github.com/HadenGwin/cbbAnalysis/issues
