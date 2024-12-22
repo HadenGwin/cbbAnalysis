@@ -1,0 +1,21 @@
+Package: cbbAnalysis
+Title: Acquire and Analyze NCAA Basketball Metrics
+Version: 0.0.0.9000
+Authors@R: 
+    person(
+      "Haden", "Goodwin",
+      email = "hadengwin@gmail.com",
+      role = c("aut", "cre")
+    )
+Description: This package scrapes Sports Reference webpages to extract NCAA basketball statistics and stores them as tables. 
+             It enables analysis using tools such as random forest regression, allowing users to build samples of any size, 
+             dynamically predict matchups, and evaluate performance metrics.
+License: GPL-3
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+Imports: 
+    dplyr,
+    rvest,
+    randomForest,
+    lubridate
