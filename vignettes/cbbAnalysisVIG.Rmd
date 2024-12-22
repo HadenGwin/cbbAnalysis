@@ -1,0 +1,113 @@
+---
+title: "Analyzing NCAAM with cbbAnalysis"
+author: "Haden Goodwin"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Analyzing NCAAM with cbbAnalysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(cbbAnalysis)
+```
+
+
+# Motivation and Background
+
+One of the many reasons I wanted to start working with data was my growing interest of models and sports analytics. I started learning how to program because of this interest, in which I taught myself a very basic foundation of this through baseball statistics. My intrigue to the field of biostatistics stems from this chapter in my life in which I had so much fun going through baseball stats, but also because of my interest in the medical field. Putting these two together keeps me engaged in my passions. I built this beginning R package to somewhat exhaust what I have learned in R using hospital or other data. This was one of the more fun projects I have had over the last couple courses as it has given me the freedom to pursue the joy in this type of skill.
+
+Basketball analytics has grown significantly over the years, with advanced metrics becoming essential for evaluating performance. While Sports Reference provides extensive NCAA basketball data, accessing this data programmatically can be challenging. 
+
+The `cbbAnalysis` package was created to bridge this gap, allowing analysts to scrape data, calculate advanced metrics, and make predictive models. This package simplifies the process of retrieving and using NCAA basketball statistics for analysis.
+
+# Installation
+
+``` {r install}
+devtools::install_github("HadenGwin/cbbAnalysis")
+```
+
+# Examples
+
+Here is a basic example that demonstrates some of the functionality of the cbbAnalysis package:
+
+## Scraping Matchups
+
+```{r matchups-example}
+library(cbbAnalysis)
+# Get matchups for December 1, 2024
+matchups <- matchupsDate("2024-12-01")
+print(matchups)
+```
+
+## Calculating Four Factors Statistics
+
+```{r four-factors}
+boxscore_url <- "https://www.sports-reference.com/cbb/boxscores/2024-12-02-03-nevada.html"
+
+four_factors <- create_four_factors(boxscore_url)
+print(four_factors)
+```
+
+## Individual Team Statistics
+
+``` {r team-stats}
+
+team = "https://www.sports-reference.com/cbb/schools/indiana/2024.html"
+
+teamStats <- calculate_team_metrics(team)
+print(teamStats)
+```
+
+## train a model on a dynamic sample size
+
+``` {r train-model}
+start_date <- "2024-11-28"
+end_date <- "2024-12-12"
+num_games_per_day = 3
+ntree = 699
+
+newModel <- trainModel(start_date, end_date, num_games_per_day, ntree)
+```
+
+
+## predict matchups
+
+``` {r predict-matchups}
+yourModel <- trainModel(start_date = "2024-11-15", end_date = "2024-11-25", num_games_per_day = 5, ntree = 300)
+
+predictions <- predict_matchup(
+  team1_url = "https://www.sports-reference.com/cbb/schools/indiana/2024.html",
+  team2_url = "https://www.sports-reference.com/cbb/schools/connecticut/2024.html",
+  yourModel
+)
+print(predictions)
+```
+
+## Future Work
+
+The current version of cbbAnalysis provides foundational tools for NCAA basketball analysis. Future enhancements could include:
+
+Expanded Metrics: Adding player-level and lineup-specific metrics.
+
+Additional Data Sources: Supporting other sports or platforms for analysis.
+
+Visualization Tools: Integrating visualizations for trends, comparisons, and predictions.
+
+Enhanced Models: Exploring advanced algorithms like gradient boosting or deep learning.
+
+Storing capabilities: The trainModel function could be used to translate data into an ever growing database of statistics, allowing for more opportunity to utilize models for creation
+
+Database implementation could go along way for rankings of players, teams, or even just good old power rankings of the season.
+
+By building on this foundation, cbbAnalysis aims to be a comprehensive tool for basketball analytics.
+
+I also believe the foundation of these functions allows for relatively applicable practices in the field of biostatistics to scrape health data or clinical trial data and implement models in a similar fashion as I have done with this package specifically built for college basketball.
